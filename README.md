@@ -1,1 +1,1 @@
-# prog-rozproszone
+# prog-rownolegle
