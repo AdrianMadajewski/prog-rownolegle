@@ -34,9 +34,9 @@ int main(int argc, char *argv[])
     bench.T1();
 
 // dla jasnosci wypisalem w klazuri shared te zmienne
-#pragma omp parallel default(none) shared(x, sum, i, step)
+    #pragma omp parallel default(none) shared(x, sum, i, step)
     {
-#pragma omp for schedule(guided)
+        #pragma omp for schedule(guided)
         for (i = 0; i < NUM_STEPS; i++)
         {
             x = (i + .5) * step;

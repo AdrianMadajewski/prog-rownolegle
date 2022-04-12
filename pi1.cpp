@@ -14,7 +14,6 @@
 //    Wiec jak cos wywlaszczylo na 5 sec nasz program,
 //    to ten czas nie bedzie liczony.
 
-
 // Bez zrownoleglenia
 int main(int argc, char *argv[])
 {

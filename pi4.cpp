@@ -4,43 +4,22 @@
 #include <omp.h>
 #include "bench.cpp"
 
-/*
-threads_num=8
-<time.h> time=0.845922
- <omp.h> time=0.110403
-Wartosc liczby PI wynosi  3.141592653590
-
-threads_num=4
-<time.h> time=0.440836
- <omp.h> time=0.111723
-Wartosc liczby PI wynosi  3.141592653590
-
-MEMSHIFT eksperyment
-<time.h> time=4.301967
- <omp.h> time=2.151685
-
-threads_num=2
-<time.h> time=0.437099
- <omp.h> time=0.218620
-Wartosc liczby PI wynosi  3.141592653590
-*/
-
 int main(int argc, char *argv[])
 {
   int threads_num = THREADS_POLICY;
   omp_set_num_threads(threads_num);
 
   double pi, sum = 0.0;
+  double step = 1. / (double)NUM_STEPS;
 
   bench_t bench;
   bench.T1();
 
-#pragma omp parallel default(none) shared(sum)
+#pragma omp parallel default(none) shared(sum, step)
   {
-    double step = (1. / NUM_STEPS);
     double priv_sum = 0.0;
 
-#pragma omp for
+  #pragma omp for
     for (int i = 0; i < NUM_STEPS; i++)
     {
       double x = (i + .5) * step;
@@ -51,7 +30,7 @@ int main(int argc, char *argv[])
     sum += priv_sum;
   }
 
-  double step = 1. / (double)NUM_STEPS;
+  
   pi = sum * step;
 
   bench.T2();

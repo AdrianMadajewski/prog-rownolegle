@@ -16,51 +16,29 @@
 //    mozemy zastosowac vectoryzacje (ten pomysl przejawia sie w PI6)
 //    trzeba jednak pamietac o false sharingu
 
-/*
-threads_num=8
-<time.h> time=141.339692
- <omp.h> time=17.948450
-Wartosc liczby PI wynosi  3.141592653591
-
-threads_num=4
-<time.h> time=50.136117
- <omp.h> time=12.541923
-Wartosc liczby PI wynosi  3.141592653590
-
-threads_num=2
-<time.h> time=11.375469
- <omp.h> time=5.688302
-Wartosc liczby PI wynosi  3.141592653590
-
-3. Zrealizować ciąg dostępów (odczyt, zapis) do współdzielonej sumy w sposób
-niepodzielny:
-
-*/
-
 int main(int argc, char *argv[])
 {
     int threads_num = THREADS_POLICY;
     omp_set_num_threads(threads_num);
 
     double pi, sum = 0.0;
+    double step = 1. / (double)NUM_STEPS;
 
     bench_t bench;
     bench.T1();
 
-#pragma omp parallel default(none) shared(sum)
+    #pragma omp parallel default(none) shared(sum)
     {
-        double step = 1. / (double)NUM_STEPS;
-
-#pragma omp for schedule(guided)
+        #pragma omp for schedule(guided)
         for (int i = 0; i < NUM_STEPS; i++)
         {
             double x = (i + .5) * step;
-#pragma omp atomic
+
+            #pragma omp atomic
             sum += 4.0 / (1. + x * x);
         }
     }
 
-    double step = 1. / (double)NUM_STEPS;
     pi = sum * step;
 
     bench.T2();
