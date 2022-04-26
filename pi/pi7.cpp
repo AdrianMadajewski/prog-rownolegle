@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
                 partial_sums[access_address] += 4.0 / (1. + x * x);
             }
             #pragma omp atomic
-            sum += partial_sums[access_adress];
+            sum += partial_sums[access_address];
         }
         bench.T2();
         // bench.print();

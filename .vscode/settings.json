@@ -1,0 +1,16 @@
+{
+    "files.associations": {
+        "array": "c",
+        "string_view": "c",
+        "initializer_list": "c",
+        "utility": "c",
+        "deque": "c",
+        "string": "c",
+        "unordered_map": "c",
+        "vector": "c",
+        "stdlib.h": "c",
+        "iostream": "cpp",
+        "algorithm": "cpp",
+        "ctime": "cpp"
+    }
+}
