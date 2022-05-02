@@ -13,7 +13,7 @@
 
 using namespace std;
 
-void ShowResults(vector<int>& arr, int min = MIN, int max = MAX, bool reverse = true, bool showAll = true)
+void show_results(vector<int>& arr, int min = MIN, int max = MAX, bool reverse = true, bool showAll = true)
 {
 	int counter = 0;
 	for (int i = 0; i < arr.size(); i++)
@@ -55,13 +55,13 @@ void ShowResults(vector<int>& arr, int min = MIN, int max = MAX, bool reverse = 
 	cout << "Dla przedzialu od " << min << " do " << max << " znaleziono " << counter << " liczb pierwszych.\n\n";
 }
 
-void setUpArray(vector<int> &arr, int min, int max)
+void set_up_vector(vector<int> &arr, int min, int max)
 {
     for(int i = min; i <= max; ++i)
         arr.emplace_back(i);
 }
 
-vector<int> SieveRange(int min, int max)
+vector<int> sieve_in_range(int min, int max)
 {
 	int vecSize = (max - min + 1) / 2; // Ustalenie rozmiaru vectora wykreśleń na połowę rozmiaru, ze względu na nieobecność liczb parzystych.
 	int endFor = floor(sqrt(max)) + 1; // Sprawdzane będzie do pierwiastka z przedziału.
@@ -95,16 +95,13 @@ vector<int> SieveRange(int min, int max)
 	return primes; // Zwrócenie vectora liczb pierwszych w danym przedziale.
 }
 
-double sequential_sieve(vector<int>& arr)
+void sequential_sieve(vector<int>& arr)
 {
-	double start, stop;
-	start = clock();
-
 	int arrSize = arr.size();
 	int minimum = arr[0]; // Wyznaczenie minimum vectora i przypisanie do zmiennej w celu rzadszego odwoływania się bezpośrednio do vectora.
 	int maximum = arr[arrSize - 1]; // Wyznaczenie maximum vectora i przypisanie do zmiennej w celu rzadszego odwoływania się bezpośrednio do vectora.
 
-	vector<int> primes = SieveRange(2, floor(sqrt(maximum)) + 1); // Wyznaczenie liczb pierwszych z przedziału (2, pierwiastek z maximum przedziału).
+	vector<int> primes = sieve_in_range(2, floor(sqrt(maximum)) + 1); // Wyznaczenie liczb pierwszych z przedziału (2, pierwiastek z maximum przedziału).
 	int primesSize = primes.size(); // Wyznaczenie liczby liczb pierwszych do pierwiastka z maximum, w celu uniknięcia nadmiarowych obliczeń w pętli.
 
 	for (int i = 0; i <= maximum - minimum; i += BLOCK_SIZE) // Przetwarzanie blokowe, co BLOCK_SIZE, w celu trzymania w pamięci cache optymalnej ilości danych.
@@ -127,20 +124,16 @@ double sequential_sieve(vector<int>& arr)
 			}
 		}
 	}
-
-	stop = clock();
-
-	return (stop - start) / 1000.; // Czas w ms
 }
 
 int main()
 {
     std::vector<int> array;
-    setUpArray(array, MIN, MAX);
+    set_up_vector(array, MIN, MAX);
 
-    std::cout << sequential_sieve(array) << std::endl;
+    sequential_sieve(array);
 
-    ShowResults(array);
+    show_results(array);
 
     return 0;
 }

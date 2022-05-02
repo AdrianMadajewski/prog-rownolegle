@@ -97,11 +97,9 @@ void setUpArray(vector<int> &arr, int min, int max)
         arr.emplace_back(i);
 }
 
-double parallel_primes(vector<int>& arr, const int threads)
+void parallel_primes(vector<int>& arr, const int threads)
 {
 	omp_set_num_threads(threads);
-	double start, stop;
-	start = omp_get_wtime();
 
 #pragma omp parallel
 	{
@@ -127,13 +125,9 @@ double parallel_primes(vector<int>& arr, const int threads)
 				arr[i] = -1; // Oznaczenie, że dana liczba nie jest liczbą pierwszą.
 		}
 	}
-
-	stop = omp_get_wtime();
-
-	return (stop - start) * 1000; // wynik w ms
 }
 
-double parallel_prime_improved(vector<int>& arr, const int threads)
+void parallel_prime_improved(vector<int>& arr, const int threads)
 {
 	omp_set_num_threads(threads);
 	double start, stop;
@@ -167,10 +161,6 @@ double parallel_prime_improved(vector<int>& arr, const int threads)
 				arr[i] = -1; // Oznaczenie, że dana liczba nie jest liczbą pierwszą.
 		}
 	}
-
-	stop = omp_get_wtime();
-
-	return (stop - start) * 1000.; // wynik w ms
 }
 
 
@@ -180,7 +170,8 @@ int main()
     std::vector<int> array;
     setUpArray(array, MIN, MAX);
 
-    std::cout << parallel_primes(array, THREADS) << std::endl;
+   	parallel_primes(array, THREADS);
+	// parallel_prime_improved(array, THREADS);
 
     // ShowResults(array);
 

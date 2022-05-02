@@ -17,7 +17,7 @@ using namespace std;
 #define FUNCTION_BLOCK_SIZE 64 * 1024 // Wielkość bloku przetwarzania dla algorytmu sita funkcyjnego.
 #define FUNCTION_PRIMES_BLOCK_SIZE 200 // Wielkość bloku przetwarzania liczb pierwszych w algorytmie sita funkcyjnego. Liczba 200 dobrana nie dla najszybszego przetwarzania, lecz w celu zapewnienia, że dla MAX = 135000000, każdy wątek otrzyma część pracy.
 
-void ShowResults(vector<int>& arr, int min = MIN, int max = MAX, bool reverse = true, bool showAll = true)
+void show_results(vector<int>& arr, int min = MIN, int max = MAX, bool reverse = true, bool showAll = true)
 {
 	int counter = 0;
 	for (int i = 0; i < arr.size(); i++)
@@ -59,13 +59,13 @@ void ShowResults(vector<int>& arr, int min = MIN, int max = MAX, bool reverse = 
 	cout << "Dla przedzialu od " << min << " do " << max << " znaleziono " << counter << " liczb pierwszych.\n\n";
 }
 
-void SetUpArray(vector<int>& arr, int min, int max)
+void set_up_vector(vector<int>& arr, int min, int max)
 {
 	 for(int i = min; i <= max; ++i)
         arr.emplace_back(i);
 }
 
-vector<int> SieveRange(int min, int max)
+vector<int> sieve_in_range(int min, int max)
 {
 	int vecSize = (max - min + 1) / 2; // Ustalenie rozmiaru vectora wykreśleń na połowę rozmiaru, ze względu na nieobecność liczb parzystych.
 	int endFor = floor(sqrt(max)) + 1; // Sprawdzane będzie do pierwiastka z przedziału.
@@ -99,17 +99,14 @@ vector<int> SieveRange(int min, int max)
 	return primes; // Zwrócenie vectora liczb pierwszych w danym przedziale.
 }
 
-double FunctionSieve(vector<int>& arr, int threads)
+void functional_sieve(vector<int>& arr, int threads)
 {
 	omp_set_num_threads(threads);
-	double start, stop;
-	start = omp_get_wtime();
-
 	int arrSize = arr.size();
 	int min = arr[0];
 	int max = arr[arrSize - 1];
 
-	vector<int> primes = SieveRange(2, floor(sqrt(max)) + 1); // Wyznaczenie liczb pierwszych z przedziału (2, pierwiastek z maximum przedziału).
+	vector<int> primes = sieve_in_range(2, floor(sqrt(max)) + 1); // Wyznaczenie liczb pierwszych z przedziału (2, pierwiastek z maximum przedziału).
 	int primesSize = primes.size(); // Wyznaczenie liczby liczb pierwszych do pierwiastka z maximum, w celu uniknięcia nadmiarowych obliczeń w pętli.
 
 #pragma omp parallel
@@ -147,20 +144,16 @@ double FunctionSieve(vector<int>& arr, int threads)
 			}
 		}
 	}
-
-	stop = omp_get_wtime();
-
-	return (stop - start) * 1000.; // czas w ms
 }
 
 int main()
 {
     std::vector<int> array;
-    SetUpArray(array, MIN, MAX);
+    set_up_vector(array, MIN, MAX);
 
-    std::cout << FunctionSieve(array, THREADS) << std::endl;
+   	functional_sieve(array, THREADS);
 
-    ShowResults(array);
+    show_results(array);
 
     return 0;
 }

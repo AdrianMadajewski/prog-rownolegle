@@ -14,7 +14,7 @@ using namespace std;
 #define MIN 2 
 #define THREADS 4
 
-void ShowResults(vector<int>& arr, int min = MIN, int max = MAX, bool reverse = true, bool showAll = true)
+void show_results(vector<int>& arr, int min = MIN, int max = MAX, bool reverse = true, bool showAll = true)
 {
 	int counter = 0;
 	for (int i = 0; i < arr.size(); i++)
@@ -56,7 +56,7 @@ void ShowResults(vector<int>& arr, int min = MIN, int max = MAX, bool reverse = 
 	cout << "Dla przedzialu od " << min << " do " << max << " znaleziono " << counter << " liczb pierwszych.\n\n";
 }
 
-vector<int> SieveRange(int min, int max)
+vector<int> sieve_in_range(int min, int max)
 {
 	int vectorSize = (max - min + 1) / 2; // Ustalenie rozmiaru vectora wykreśleń na połowę rozmiaru, ze względu na nieobecność liczb parzystych.
 	int endBound = floor(sqrt(max)) + 1; // Sprawdzane będzie do pierwiastka z przedziału.
@@ -91,17 +91,15 @@ vector<int> SieveRange(int min, int max)
 	return primes; // Zwrócenie vectora liczb pierwszych w danym przedziale.
 }
 
-double DomainSieve(vector<int>& arr, int threads)
+
+void domain_sieve(vector<int>& arr, int threads)
 {
 	omp_set_num_threads(threads);
-	double start, stop;
-	start = omp_get_wtime();
-
 	int arrSize = arr.size();
 	int min = arr[0];
 	int max = arr[arrSize - 1];
 
-	vector<int> primes = SieveRange(2, floor(sqrt(max)) + 1); // Wyznaczenie liczb pierwszych z przedziału (2, pierwiastek z maximum przedziału).
+	vector<int> primes = sieve_in_range(2, floor(sqrt(max)) + 1); // Wyznaczenie liczb pierwszych z przedziału (2, pierwiastek z maximum przedziału).
 	int primesSize = primes.size(); // Wyznaczenie liczby liczb pierwszych do pierwiastka z maximum, w celu uniknięcia nadmiarowych obliczeń w pętli.
 
 #pragma omp parallel
@@ -132,13 +130,9 @@ double DomainSieve(vector<int>& arr, int threads)
 			}
 		}
 	}
-
-	stop = omp_get_wtime();
-
-	return (stop - start) / 1000.; // Czas w ms
 }
 
-void setUpArray(vector<int> &arr, int min, int max)
+void set_up_vector(vector<int> &arr, int min, int max)
 {
     for(int i = min; i <= max; ++i)
         arr.emplace_back(i);
@@ -147,11 +141,11 @@ void setUpArray(vector<int> &arr, int min, int max)
 int main()
 {
     std::vector<int> array;
-    setUpArray(array, MIN, MAX);
+    set_up_vector(array, MIN, MAX);
 
-    std::cout << DomainSieve(array, THREADS) << std::endl;
+    domain_sieve(array, THREADS);
 
-    ShowResults(array);
+    show_results(array);
 
     return 0;
 }

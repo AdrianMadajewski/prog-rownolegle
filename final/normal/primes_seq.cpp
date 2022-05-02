@@ -11,9 +11,8 @@ using namespace std;
 
 #define MAX 100000
 #define MIN 2 
-#define TIME_INTERVAL 1000.0
 
-void ShowResults(vector<int>& arr, int min = MIN, int max = MAX, bool reverse = true, bool showAll = true)
+void show_results(vector<int>& arr, int min = MIN, int max = MAX, bool reverse = true, bool showAll = true)
 {
 	int counter = 0;
 	for (int i = 0; i < arr.size(); i++)
@@ -55,7 +54,7 @@ void ShowResults(vector<int>& arr, int min = MIN, int max = MAX, bool reverse = 
 	cout << "Dla przedzialu od " << min << " do " << max << " znaleziono " << counter << " liczb pierwszych.\n\n";
 }
 
-void setUpArray(vector<int> &arr, int min, int max)
+void set_up_vector(vector<int> &arr, int min, int max)
 {
     for(int i = min; i <= max; ++i)
         arr.emplace_back(i);
@@ -63,9 +62,6 @@ void setUpArray(vector<int> &arr, int min, int max)
 
 double seqential_primes(vector<int> &arr)
 {
-    clock_t start, stop;
-    start = clock();
-
     for(int i = 0; i < arr.size(); ++i)
     {
         // Przypisanie do 'number' sprawdzanej wartości, 
@@ -89,13 +85,9 @@ double seqential_primes(vector<int> &arr)
 		if (divided)
 			arr[i] = -1; // Oznaczenie, że dana liczba nie jest liczbą pierwszą.
     }
-
-    stop = clock();
-
-    return (double)(stop - start) / TIME_INTERVAL;
 }
 
-vector<int> SieveRange(int min, int max)
+vector<int> sieve_in_range(int min, int max)
 {
 	int vecSize = (max - min + 1) / 2; // Ustalenie rozmiaru vectora wykreśleń na połowę rozmiaru, ze względu na nieobecność liczb parzystych.
 	int endFor = floor(sqrt(max)) + 1; // Sprawdzane będzie do pierwiastka z przedziału.
@@ -129,12 +121,9 @@ vector<int> SieveRange(int min, int max)
 	return primes; // Zwrócenie vectora liczb pierwszych w danym przedziale.
 }
 
-double sequential_prime_improved(vector<int>& arr)
+void sequential_prime_improved(vector<int>& arr)
 {
-	clock_t start, stop;
-	start = clock();
-
-	vector<int> primes = SieveRange(2, floor(sqrt(arr[arr.size() - 1])) + 1); // Wyznaczenie liczb pierwszych do pierwiastka z wartości maksymalnej
+	vector<int> primes = sieve_in_range(2, floor(sqrt(arr[arr.size() - 1])) + 1); // Wyznaczenie liczb pierwszych do pierwiastka z wartości maksymalnej
 	int primesSize = primes.size();
 
 	for (int i = 0; i < arr.size(); i++)
@@ -158,20 +147,16 @@ double sequential_prime_improved(vector<int>& arr)
 		if (divided)
 			arr[i] = -1; // Oznaczenie, że dana liczba nie jest liczbą pierwszą.
 	}
-
-	stop = clock();
-
-	return (double)(stop - start) / TIME_INTERVAL;
 }
 
 int main()
 {
     std::vector<int> array;
-    setUpArray(array, MIN, MAX);
+    set_up_vector(array, MIN, MAX);
 
-    std::cout << seqential_primes(array) << std::endl;
+  	seqential_primes(array);
 
-    // ShowResults(array);
+    // show_results(array);
 
     return 0;
 }
