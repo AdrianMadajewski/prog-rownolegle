@@ -64,11 +64,11 @@ void set_up_vector(vector<int> &arr, int min, int max)
 vector<int> sieve_in_range(int min, int max)
 {
 	int vecSize = (max - min + 1) / 2; // Ustalenie rozmiaru vectora wykreśleń na połowę rozmiaru, ze względu na nieobecność liczb parzystych.
-	int endFor = floor(sqrt(max)) + 1; // Sprawdzane będzie do pierwiastka z przedziału.
+	int upperBound = floor(sqrt(max)) + 1; // Sprawdzane będzie do pierwiastka z przedziału.
 
 	vector<int> isPrime(vecSize, 1);
 
-	for (int i = 3; i < endFor; i += 2) // Iterowanie pomijające liczby parzyste.
+	for (int i = 3; i < upperBound; i += 2) // Iterowanie pomijające liczby parzyste.
 	{
 		int startNumber = ((min + i - 1) / i) * i; // Ustalenie pierwszej liczby na pierwszą wielokrotność 'i' większą od minimum (o ile jest większa niż i * i).
 		if (startNumber < i * i)
@@ -108,8 +108,8 @@ void sequential_sieve(vector<int>& arr)
 	{
 		for (int j = 0; j < primesSize; j++) // Pętla po wszystkich liczbach pierwszych do pierwiastka z maximum.
 		{
-			int beg = minimum + i; // Wyznaczenie liczby równej początku przetwarzania w danym bloku.
-			int t = beg / primes[j] + (beg % primes[j] == 0 ? 0 : 1); // Wyznaczenie od której wielokrotności liczby pierwszej zacząć. Jeśli początek jest od razu wielokrotnością, zaczyna się od niego, w przeciwnym wypadku należy wyznaczyć kolejną wielokrotność, aby była większa niż minimum.
+			int beginning = minimum + i; // Wyznaczenie liczby równej początku przetwarzania w danym bloku.
+			int t = beginning / primes[j] + (beginning % primes[j] == 0 ? 0 : 1); // Wyznaczenie od której wielokrotności liczby pierwszej zacząć. Jeśli początek jest od razu wielokrotnością, zaczyna się od niego, w przeciwnym wypadku należy wyznaczyć kolejną wielokrotność, aby była większa niż minimum.
 			if (t < 2)
 				t = 2; // Gdyby wielokrotność wyszła mniejsza niż 2, zapewnienie, aby była ona przynajmniej równa 2.
 
