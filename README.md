@@ -1,6 +1,6 @@
 # Parallel Computing with MPI
 
-Please don't look at commit messages - those are pretty hard assignments to mantain with pure joy of not throwing up. 
+*Please don't look at commit messages - those are pretty hard assignments to mantain with pure joy of not throwing up.* 
 
 Assignment mostly made to provide explanation of common parallel computing coding problems like *false sharing*, *race condition* and how to avoid them.
 
